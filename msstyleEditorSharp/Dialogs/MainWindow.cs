@@ -167,6 +167,9 @@ namespace msstyleEditor
             btPropertyAdd.Enabled = true;
             btPropertyRemove.Enabled = true;
             btTestTheme.Enabled = m_themeManager != null ? true : false;
+            btSearch.Enabled = true;
+            btExpandTree.Enabled = true;
+            btCollapseTree.Enabled = true;
 
             if (m_style.StringTable?.Count == 0)
                 btFileSave.Style = RibbonButtonStyle.Normal;
@@ -203,6 +206,9 @@ namespace msstyleEditor
             btPropertyAdd.Enabled = false;
             btPropertyRemove.Enabled = false;
             btTestTheme.Enabled = false;
+            btSearch.Enabled = false;
+            btExpandTree.Enabled = false;
+            btCollapseTree.Enabled = false;
 
             lbStylePlatform.Text = "";
             m_style?.Dispose();
