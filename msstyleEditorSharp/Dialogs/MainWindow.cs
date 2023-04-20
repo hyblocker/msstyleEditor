@@ -841,12 +841,12 @@ namespace msstyleEditor
         private void OnMainWindowLoad(object sender, EventArgs e)
         {
             RegistrySettings settings = new RegistrySettings();
-            if(!settings.HasConfirmedWarning)
+            if (!settings.HasConfirmedWarning)
             {
-                if(MessageBox.Show("Modifying themes can break the operating system!\r\n\r\n" +
+                if (MessageBox.Show("Modifying themes can break the operating system!\r\n\r\n" +
                     "Make sure you have a recent system restore point. Only proceed if you understand " +
                     "the risk and can deal with technical problems."
-                    
+
                     , "msstyleEditor - Risk Warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
                 {
                     settings.HasConfirmedWarning = true;
@@ -856,6 +856,51 @@ namespace msstyleEditor
                     Close();
                 }
             }
+
+            // Restore state based on settings
+
+            // Window position
+            int posX = 0, posY = 0;
+            posX = settings.MainWindowPosX;
+            posY = settings.MainWindowPosY;
+            var loc = this.Location;
+
+            this.Location = new Point(
+                posX == int.MinValue ? loc.X : posX,
+                posY == int.MinValue ? loc.Y : posY);
+
+            // Window size
+            int sizeX = 0, sizeY = 0;
+            sizeX = settings.MainWindowSizeX;
+            sizeY = settings.MainWindowSizeY;
+            var size = this.Size;
+
+            this.Size = new Size(
+                sizeX == int.MinValue ? size.Width : sizeX,
+                sizeY == int.MinValue ? size.Height : sizeY);
+
+            // Window state
+            this.WindowState = settings.MainWindowState;
+
+            // Background style
+            switch (settings.ImageBackgroundId)
+            {
+                case 0:
+                    OnImageViewBackgroundChange(btImageBgWhite, null);
+                    break;
+                case 1:
+                    OnImageViewBackgroundChange(btImageBgGrey, null);
+                    break;
+                case 2:
+                    OnImageViewBackgroundChange(btImageBgBlack, null);
+                    break;
+                default:
+                    OnImageViewBackgroundChange(btImageBgChecker, null);
+                    break;
+            }
+
+            m_imageView.IsHidden    = settings.HideImageView;
+            m_renderView.IsHidden   = settings.HideRenderView;
         }
 
         private void OnImageSelectIndex(object sender, EventArgs e)
@@ -884,6 +929,29 @@ namespace msstyleEditor
             {
                 c.BackColor = SystemColors.Control;
             }
+        }
+
+        private void MainWindow_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            // Persist settings
+            RegistrySettings settings   = new RegistrySettings();
+
+            // Main window location / state
+            settings.MainWindowPosX     = this.Location.X;
+            settings.MainWindowPosY     = this.Location.Y;
+            settings.MainWindowSizeX    = this.Size.Width;
+            settings.MainWindowSizeY    = this.Size.Height;
+            settings.MainWindowState    = this.WindowState;
+
+            // View tab
+            settings.ImageBackgroundId  =
+                this.btImageBgWhite.Checked   ? 0 :
+                this.btImageBgGrey.Checked    ? 1 :
+                this.btImageBgBlack.Checked   ? 2 :
+                                                3;
+
+            settings.HideImageView      = m_imageView.IsHidden;
+            settings.HideRenderView     = m_renderView.IsHidden;
         }
     }
 }
