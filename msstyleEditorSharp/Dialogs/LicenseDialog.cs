@@ -56,5 +56,18 @@ https://github.com/RibbonWinForms/RibbonWinForms/blob/master/LICENSE.
                 tbLicense.Text = LICENSE[lvSelection.SelectedIndices[0]];
             }
         }
+
+        // Escape to close dialog
+        protected override bool ProcessDialogKey(Keys keyData)
+        {
+            if (keyData == Keys.Escape && Form.ModifierKeys == Keys.None)
+            {
+                this.Close();
+                return true;
+            }
+
+            return base.ProcessDialogKey(keyData);
+        }
+
     }
 }

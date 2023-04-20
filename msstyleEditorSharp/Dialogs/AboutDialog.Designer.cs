@@ -134,5 +134,18 @@ namespace msstyleEditor
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label lbCopyright;
         private System.Windows.Forms.Label lbVersion;
+
+        // Escape to close dialog
+        protected override bool ProcessDialogKey(System.Windows.Forms.Keys keyData)
+        {
+            if (keyData == System.Windows.Forms.Keys.Escape &&
+                System.Windows.Forms.Form.ModifierKeys == System.Windows.Forms.Keys.None)
+            {
+                this.Close();
+                return true;
+            }
+
+            return base.ProcessDialogKey(keyData);
+        }
     }
 }

@@ -113,5 +113,17 @@ namespace msstyleEditor
             m_property = new StyleProperty((IDENTIFIER)prop.Id, (IDENTIFIER)prop.Info.TypeId);
             this.Close();
         }
+
+        // Escape to close dialog
+        protected override bool ProcessDialogKey(Keys keyData)
+        {
+            if (keyData == Keys.Escape && Form.ModifierKeys == Keys.None)
+            {
+                this.Close();
+                return true;
+            }
+
+            return base.ProcessDialogKey(keyData);
+        }
     }
 }
