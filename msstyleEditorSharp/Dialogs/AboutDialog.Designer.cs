@@ -117,6 +117,7 @@ namespace msstyleEditor
             this.Name = "AboutDialog";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
+            this.MaximizeBox = false;
             this.Text = "About";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
